@@ -1,29 +1,32 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import axios from 'axios';
 import { Octokit, App } from 'octokit';
+import { TextField } from '@mui/material';
 
 export default function Home() {
-  const [search, setSearch] = useState('martacamacho');
+  const [search, setSearch] = useState('tetris');
   const [page, setPage] = useState(1);
+  const [reposFound, setReposFound] = useState(null);
 
   const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN,
+    auth: process.env.GITHUB_TOKEN2,
   });
   useEffect(() => {
     const findRepos = async () => {
       try {
-        const response = await octokit.request(`GET /search?page=${page}`, {
+        const response = await octokit.request(`GET /search/repositories`, {
           q: search,
+          page: page
         });
         console.log(response.data);
+        setReposFound(response.data)
       } catch (error) {
         console.log(error);
       }
     };
     //findRepos();
-  }, []);
+  }, [search]);
 
   return (
     <>
@@ -36,8 +39,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="">
-        
+      <main>
+        <div className="search-container">
+          <input type="text" value={search} name="search" id="search" required maxLength={20}/>
+          <Image src="/images/magnifyingGlass.svg" width="13" height="13" alt="magnifying glass" />
+        </div>
       </main>
     </>
   );
