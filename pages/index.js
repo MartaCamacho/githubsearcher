@@ -6,6 +6,7 @@ import { globalStyles } from '../styles/globals';
 import { Pagination } from '@mui/material';
 import RepoComponent from '../components/RepoComponent/RepoComponent';
 import SpinnerComponent from '../components/SpinnerComponent/SpinnerComponent';
+import FooterComponent from '../components/FooterComponent/FooterComponent';
 
 export default function Home() {
   const [search, setSearch] = useState('');
@@ -13,6 +14,7 @@ export default function Home() {
   const [reposFound, setReposFound] = useState(null);
   const [totalRepos, setTotalRepos] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const inputRef = useRef();
 
@@ -22,7 +24,8 @@ export default function Home() {
 
   useEffect(() => {
     inputRef.current.focus();
-  }, [search]);
+    console.log('🔎 Oh! So you are inspecting this page... I hope you do not find any strange behaviours, if so, let me know and I will take care of them. If not, you owe me a coffee ☕')
+  }, [search, page]);
 
   const findRepos = async () => {
     setLoading(true);
@@ -31,12 +34,14 @@ export default function Home() {
         q: search,
         page: page,
       });
-      setReposFound(response.data.items);
+      setReposFound(response.data.items.length > 0 ? response.data.items : false);
       const totalRepos = parseInt(response.data.total_count);
       setTotalRepos(totalRepos > 1000 ? 1000 : totalRepos);
       setLoading(false);
     } catch (error) {
       console.log(error);
+      setError(true);
+      setReposFound(false);
       setLoading(false);
     }
   };
@@ -92,16 +97,17 @@ export default function Home() {
           {reposFound && reposFound.length
             ? <>
             {reposFound.map((repo, i) => {
-              return <RepoComponent repo={repo} />
+              return <RepoComponent repo={repo} key={repo.id} />
             })}
-            <Pagination count={totalRepos && totalRepos.length ? parseInt(totalRepos / 30) : 1} variant="outlined" className="results-pagination" page={page}  onChange={handleChangePage}/>
+            <Pagination count={totalRepos ? parseInt(totalRepos / 30) : 1} variant="outlined" className="results-pagination" page={page}  onChange={handleChangePage}/>
             </>
             : 
             <span className="no-repos-found">
-            No repositories found
+            {reposFound === false ? "No repositories found" : error ? "There was an error, please try again later" : ""}
             </span>}
         </div>
       </main>
+      <FooterComponent />
       <style jsx>{globalStyles}</style>
     </>
   );
