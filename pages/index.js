@@ -94,7 +94,7 @@ export default function Home() {
             {reposFound.map((repo, i) => {
               return <RepoComponent repo={repo} />
             })}
-            <Pagination count={totalRepos ? parseInt(totalRepos / 30) : 1} variant="outlined" className="results-pagination" page={page}  onChange={handleChangePage}/>
+            <Pagination count={totalRepos && totalRepos.length ? parseInt(totalRepos / 30) : 1} variant="outlined" className="results-pagination" page={page}  onChange={handleChangePage}/>
             </>
             : 
             <span className="no-repos-found">
