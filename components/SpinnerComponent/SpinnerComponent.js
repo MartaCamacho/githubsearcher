@@ -1,11 +1,11 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress } from '@mui/material';
 
 const SpinnerComponent = () => {
   return (
     <div className="loading-spinner">
-        <CircularProgress />
+      <CircularProgress />
     </div>
-  )
-}
+  );
+};
 
-export default SpinnerComponent
+export default SpinnerComponent;

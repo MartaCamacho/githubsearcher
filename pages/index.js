@@ -19,12 +19,14 @@ export default function Home() {
   const inputRef = useRef();
 
   const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN2,
+    auth: process.env.GITHUB_TOKEN,
   });
 
   useEffect(() => {
     inputRef.current.focus();
-    console.log('🔎 Oh! So you are inspecting this page... I hope you do not find any strange behaviours, if so, let me know and I will take care of them. If not, you owe me a coffee ☕')
+    console.log(
+      '🔎 Oh! So you are inspecting this page... I hope you do not find any strange behaviours, if so, let me know and I will take care of them. If not, you owe me a coffee ☕'
+    );
   }, [search, page]);
 
   const findRepos = async () => {
@@ -34,7 +36,9 @@ export default function Home() {
         q: search,
         page: page,
       });
-      setReposFound(response.data.items.length > 0 ? response.data.items : false);
+      setReposFound(
+        response.data.items.length > 0 ? response.data.items : false
+      );
       const totalRepos = parseInt(response.data.total_count);
       setTotalRepos(totalRepos > 1000 ? 1000 : totalRepos);
       setLoading(false);
@@ -46,7 +50,7 @@ export default function Home() {
     }
   };
 
-  const onFormSubmit = e => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
     findRepos();
   };
@@ -94,17 +98,29 @@ export default function Home() {
           </form>
         </div>
         <div className="results-containter">
-          {reposFound && reposFound.length
-            ? <>
-            {reposFound.map((repo, i) => {
-              return <RepoComponent repo={repo} key={repo.id} />
-            })}
-            <Pagination count={totalRepos ? parseInt(totalRepos / 30) : 1} variant="outlined" className="results-pagination" page={page}  onChange={handleChangePage}/>
+          {reposFound && reposFound.length ? (
+            <>
+              {reposFound.map((repo, i) => {
+                return <RepoComponent repo={repo} key={repo.id} />;
+              })}
+              <Pagination
+                count={totalRepos ? parseInt(totalRepos / 30) : 1}
+                variant="outlined"
+                className="results-pagination"
+                page={page}
+                onChange={handleChangePage}
+                size={window.innerWidth < 770 ? 'small' : 'medium'}
+              />
             </>
-            : 
+          ) : (
             <span className="no-repos-found">
-            {reposFound === false ? "No repositories found" : error ? "There was an error, please try again later" : ""}
-            </span>}
+              {reposFound === false
+                ? 'No repositories found'
+                : error
+                ? 'There was an error, please try again later'
+                : ''}
+            </span>
+          )}
         </div>
       </main>
       <FooterComponent />
