@@ -14,17 +14,19 @@ a {
 }
 
 body {
-    background-color: #272727;
+    background: linear-gradient(#272727, #68E7E0);
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 100px;
 }
 
 .search-container {
     display: flex;
     justify-content: center;
-    margin-top: 30px;
-    margin-bottom: 50px;
-    padding: 0 12px;
-    position: sticky;
-    top: 0px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
     background-color: #272727;
     padding: 17px;
     z-index: 5;
@@ -34,7 +36,7 @@ body {
     border: 0px;
     border-radius: 6px;
     height: 50px;
-    width: 100%;
+    width: 90%;
     max-width: 500px;
     padding: 0 10px;
     font-size: 16px;
@@ -73,20 +75,22 @@ body {
     display: flex;
     margin-bottom: 30px;
     width: 345px;
+    max-width: 33%;
 }
 
 .repo-card-container a {
     height: 100%;
+    width: 100%;
 }
 
 .results-containter {
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
     justify-content: space-between;
     padding: 0 12px;
     max-width: 1200px;
     margin: 0 auto;
+    padding-top: 84px;
 }
 
 .results-label {
@@ -104,12 +108,11 @@ body {
 }
 
 .results-pagination {
-    width: 100%;
+    width: 90%;
     max-width: calc(100vw - 57px);
     margin: 0 auto;
     display: flex;
     justify-content: center;
-    background-color: white;
     padding: 30px;
 }
 
@@ -132,6 +135,49 @@ body {
     font-size: 26px;
     text-align: center;
     margin: 0 auto;
+    max-width: 260px;
+    margin-top: 50px;
+}
+
+footer {
+    margin: 0;
+    height: 70px;
+    background-color: #272727;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+footer a {
+    color: white;
+}
+
+.footer-link:hover,
+.social-list-link:hover {
+	opacity: .7;
+}
+
+.footer-link:hover {
+	text-decoration: underline;
+}
+
+.social-list {
+	list-style: none;
+	display: flex;
+	justify-content:center;
+	margin: 0 0 7px;
+	padding: 0;
+}
+
+.social-list-link {
+	padding: .5em;
 }
 
 @media (max-width: 1051px) {
@@ -147,6 +193,7 @@ body {
         min-height: auto;
         display: flex;
         margin-bottom: 30px;
+        max-width: 100%;
     }
 
     .repo-card-container a {
