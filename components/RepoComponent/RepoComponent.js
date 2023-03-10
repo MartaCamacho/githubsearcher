@@ -45,7 +45,7 @@ const RepoComponent = ({repo}) => {
                     <span className="results-label">Description:</span> {repo.description || "N/A"}
                   </Typography>
                   <Typography>
-                    <span className="results-label">Topics:</span> {repo.topics.map((topic, i) => {
+                    <span className="results-label">Topics:</span> {repo.topics.length ? repo.topics.map((topic, i) => {
                       if(i > 5) {
                         return ""
                       } else if(i < repo.topics.length - 1) {
@@ -53,7 +53,9 @@ const RepoComponent = ({repo}) => {
                       } else {
                         return topic
                       }
-                      })}
+                      })
+                      : <></>
+                      }
                   </Typography>
                   <Typography>
                     <span className="results-label">Language:</span> {repo.language || "N/A"}
