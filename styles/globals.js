@@ -108,7 +108,6 @@ export const globalStyles = css.global`
   }
 
   .results-pagination {
-    width: 70%;
     max-width: calc(100vw - 57px);
     margin: 0 auto;
     display: flex;
@@ -198,6 +197,10 @@ export const globalStyles = css.global`
 
     .repo-card-container a {
       max-width: 100%;
+    }
+
+    .results-pagination {
+      padding: 0 0 30px;
     }
   }
 `;
