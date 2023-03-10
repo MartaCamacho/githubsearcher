@@ -139,14 +139,23 @@ export const globalStyles = css.global`
     margin-top: 50px;
   }
 
+  .results-bottom-items {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
   .back-top {
     display: flex;
     align-items: center;
+    justify-content: center;
+    margin: 0 auto;
     margin-bottom: 30px;
     border: 3px solid #ff8d80;
     background-color: #F9C8B0;
     border-radius: 4px;
     padding: 5px 20px;
+    max-width: 150px;
   }
 
   footer {

@@ -104,16 +104,18 @@ export default function Home() {
               {reposFound.map((repo, i) => {
                 return <RepoComponent repo={repo} key={repo.id} />;
               })}
-              <Pagination
-                count={totalRepos ? parseInt(totalRepos / 30) : 1}
-                variant="outlined"
-                className="results-pagination"
-                page={page}
-                onChange={handleChangePage}
-                size={window.innerWidth < 770 ? 'small' : 'medium'}
-              />
-              <div className="back-top" onClick={() => window.scroll(0, 0)}>
-                <ArrowUpwardIcon /> Back to top
+              <div className="results-bottom-items">
+                <Pagination
+                  count={totalRepos ? parseInt(totalRepos / 30) : 1}
+                  variant="outlined"
+                  className="results-pagination"
+                  page={page}
+                  onChange={handleChangePage}
+                  size={window.innerWidth < 770 ? 'small' : 'medium'}
+                />
+                <div className="back-top" onClick={() => window.scroll(0, 0)}>
+                  <ArrowUpwardIcon /> Back to top
+                </div>
               </div>
             </>
           ) : (
