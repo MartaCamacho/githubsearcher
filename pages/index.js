@@ -1,32 +1,55 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import { Octokit, App } from 'octokit';
-import { TextField } from '@mui/material';
+import { Octokit } from 'octokit';
+import { globalStyles } from '../styles/globals';
+import { Pagination } from '@mui/material';
+import RepoComponent from '../components/RepoComponent/RepoComponent';
+import SpinnerComponent from '../components/SpinnerComponent/SpinnerComponent';
 
 export default function Home() {
-  const [search, setSearch] = useState('tetris');
+  const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [reposFound, setReposFound] = useState(null);
+  const [totalRepos, setTotalRepos] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const inputRef = useRef();
 
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN2,
   });
+
   useEffect(() => {
-    const findRepos = async () => {
-      try {
-        const response = await octokit.request(`GET /search/repositories`, {
-          q: search,
-          page: page
-        });
-        console.log(response.data);
-        setReposFound(response.data)
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    //findRepos();
+    inputRef.current.focus();
   }, [search]);
+
+  const findRepos = async () => {
+    setLoading(true);
+    try {
+      const response = await octokit.request(`GET /search/repositories`, {
+        q: search,
+        page: page,
+      });
+      setReposFound(response.data.items);
+      const totalRepos = parseInt(response.data.total_count);
+      setTotalRepos(totalRepos > 1000 ? 1000 : totalRepos);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const onFormSubmit = e => {
+    e.preventDefault();
+    findRepos();
+  };
+
+  const handleChangePage = (e, value) => {
+    setPage(value);
+    findRepos();
+  };
 
   return (
     <>
@@ -40,11 +63,46 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        {loading ? <SpinnerComponent /> : <></>}
         <div className="search-container">
-          <input type="text" value={search} name="search" id="search" required maxLength={20}/>
-          <Image src="/images/magnifyingGlass.svg" width="13" height="13" alt="magnifying glass" />
+          <form onSubmit={onFormSubmit}>
+            <input
+              type="text"
+              value={search}
+              name="search"
+              id="search"
+              required
+              maxLength={20}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search here any GitHub repository"
+              ref={inputRef}
+            />
+            <button className="search-button" type="submit">
+              Search
+              <Image
+                src="/images/magnifyingGlass.svg"
+                width="17"
+                height="17"
+                alt="magnifying glass"
+              />
+            </button>
+          </form>
+        </div>
+        <div className="results-containter">
+          {reposFound && reposFound.length
+            ? <>
+            {reposFound.map((repo, i) => {
+              return <RepoComponent repo={repo} />
+            })}
+            <Pagination count={totalRepos ? parseInt(totalRepos / 30) : 1} variant="outlined" className="results-pagination" page={page}  onChange={handleChangePage}/>
+            </>
+            : 
+            <span className="no-repos-found">
+            No repositories found
+            </span>}
         </div>
       </main>
+      <style jsx>{globalStyles}</style>
     </>
   );
 }
