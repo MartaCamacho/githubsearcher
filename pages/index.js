@@ -7,6 +7,7 @@ import { Pagination } from '@mui/material';
 import RepoComponent from '../components/RepoComponent/RepoComponent';
 import SpinnerComponent from '../components/SpinnerComponent/SpinnerComponent';
 import FooterComponent from '../components/FooterComponent/FooterComponent';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 export default function Home() {
   const [search, setSearch] = useState('');
@@ -29,12 +30,12 @@ export default function Home() {
     );
   }, [search, page]);
 
-  const findRepos = async () => {
+  const findRepos = async (pageProvided) => {
     setLoading(true);
     try {
       const response = await octokit.request(`GET /search/repositories`, {
         q: search,
-        page: page,
+        page: pageProvided ? pageProvided : page,
       });
       setReposFound(
         response.data.items.length > 0 ? response.data.items : false
@@ -57,7 +58,7 @@ export default function Home() {
 
   const handleChangePage = (e, value) => {
     setPage(value);
-    findRepos();
+    findRepos(value);
   };
 
   return (
@@ -111,6 +112,9 @@ export default function Home() {
                 onChange={handleChangePage}
                 size={window.innerWidth < 770 ? 'small' : 'medium'}
               />
+              <div className="back-top" onClick={() => window.scroll(0, 0)}>
+                <ArrowUpwardIcon /> Back to top
+              </div>
             </>
           ) : (
             <span className="no-repos-found">

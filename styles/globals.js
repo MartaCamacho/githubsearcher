@@ -7,6 +7,7 @@ export const globalStyles = css.global`
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
+    scroll-behavior: smooth;
   }
 
   a {
@@ -138,6 +139,16 @@ export const globalStyles = css.global`
     margin-top: 50px;
   }
 
+  .back-top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    border: 3px solid #ff8d80;
+    background-color: #F9C8B0;
+    border-radius: 4px;
+    padding: 5px 20px;
+  }
+
   footer {
     margin: 0;
     height: 70px;
@@ -178,6 +189,7 @@ export const globalStyles = css.global`
   .social-list-link {
     padding: 0.5em;
   }
+
 
   @media (max-width: 1051px) {
     .results-containter {
